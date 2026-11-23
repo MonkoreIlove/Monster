@@ -2420,7 +2420,7 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
         </div>
         <div class="controls">
           <div class="control search-control"><label for="search">名前・効果・メモを検索</label><div class="search-field-row"><input id="search" type="search" placeholder="名前・効果・メモを検索"><button type="button" id="clear-search" class="tool-button clear-search" aria-label="検索文字を消去" title="検索文字を消去">✕ クリア</button></div></div>
-          <div class="control"><label for="category">カテゴリ</label><select id="category"><option value="all">全カテゴリ</option><option value="ノーマル">ノーマル</option><option value="シャイニー">シャイニー</option><option value="漆黒">漆黒</option><option value="レインボー">レインボー</option><option value="伝説">伝説</option><option value="幻・通常">幻・通常</option><option value="幻・闇">幻・闇</option><option value="幻・覚醒">幻・覚醒</option></select></div>
+          <div class="control"><label for="category">カテゴリ</label><select id="category"><option value="all">全カテゴリ</option><option value="ノーマル">ノーマル</option><option value="シャイニー">シャイニー</option><option value="漆黒">漆黒</option><option value="レインボー">レインボー</option><option value="伝説">伝説</option><option value="幻・通常">幻・通常</option><option value="幻・闇">幻・闇</option><option value="幻・覚醒">幻・覚醒</option><option value="ボス">ボス（近日公開）</option></select></div>
           <div class="control"><label for="variant">変異</label><select id="variant"><option value="all">全変異</option><option value="ノーマル">ノーマル</option><option value="シャイニー">シャイニー</option><option value="漆黒">漆黒</option><option value="レインボー">レインボー</option><option value="なし">なし</option><option value="闇">闇</option><option value="覚醒">覚醒</option></select></div>
           <div class="control"><label for="evidence">根拠状態</label><select id="evidence"><option value="all">確認・計算すべて</option><option value="confirmed">確認済み中心</option><option value="calculated">計算値を含む</option></select></div>
         </div>
@@ -2435,6 +2435,7 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
             <button type="button" class="quick-chip" data-quick="シャイニー">シャイニー</button>
             <button type="button" class="quick-chip" data-quick="漆黒">漆黒</button>
             <button type="button" class="quick-chip" data-quick="レインボー">レインボー</button>
+            <button type="button" class="quick-chip" data-quick="ボス">ボス <small class="soon-tag">近日公開</small></button>
           </div>
           <div class="utility-actions">
             <label class="sort-control">並び替え<select id="sort-order" aria-label="並び替え"><option value="default">おすすめ順</option><option value="name">名前順</option><option value="hp-desc">レベル適用HPが高い順</option><option value="power-desc">レベル適用攻撃力が高い順</option><option value="level-desc">レベルが高い順</option><option value="level-asc">レベルが低い順</option><option value="number">図鑑番号順</option></select></label>
@@ -2786,6 +2787,9 @@ function render() {
       const filtered = filterRows();
       elements.resultCount.textContent = filtered.length + ' / ' + rows.length + '件';
       elements.empty.hidden = filtered.length !== 0;
+      const bossSelected = elements.category.value === 'ボス' || quickCategory === 'ボス';
+      elements.empty.textContent = bossSelected ? '🔒 ボスは近日公開です。公開までお待ちください！' : '条件に一致するデータがありません。';
+      elements.empty.classList.toggle('coming-soon', bossSelected);
       elements.favoriteCount.textContent = 'お気に入り ' + favorites.size + '件';
       const active = [];
       if (elements.search.value.trim()) active.push('検索: ' + elements.search.value.trim());
@@ -3606,6 +3610,10 @@ html{scroll-behavior:smooth}
 .monster-card.rainbow::after{background:linear-gradient(90deg,#ff6b6b,#ffd84d,#5be07a,#5bc8ff,#b57bff)}
 .level-result{grid-template-columns:1fr 1fr!important;gap:10px!important}
 .level-result strong{font-size:clamp(1.05rem,5vw,1.35rem)!important}
+</style>
+<style id="boss-coming-soon">
+.soon-tag{display:inline-block;margin-left:.35em;padding:1px 7px;border-radius:999px;font-size:.62rem;font-weight:800;color:#2b1a00;background:linear-gradient(135deg,#ffd76a,#ffa94d);vertical-align:middle}
+.empty.coming-soon{padding:34px 18px;text-align:center;font-size:1.05rem;font-weight:800;color:#ffe3ad;border:1px dashed rgba(255,215,106,.55);border-radius:18px;background:rgba(255,200,90,.08)}
 </style>
 </body>
 </html>
