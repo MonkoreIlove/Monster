@@ -2373,6 +2373,7 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
         <p class="eyebrow">MONSTER BESTIARY / FIELD ARCHIVE</p>
         <h1>モンコレ図鑑<br>魔獣アーカイブ</h1>
         <p class="hero-copy">通常図鑑80体・伝説10体・幻15レコードを収録。スマートフォンでも検索・比較・育成管理しやすい魔獣アーカイブ。</p>
+        <p class="data-note">※ 数値が多少ずれている場合がありますがご了承ください。</p>
         <div class="hero-meta">
           <a class="meta-pill jump-pill" href="#catalog-heading">▼ 図鑑を見る</a>
           <span class="meta-pill">DATA ARCHIVE · 2026.11</span>
@@ -2419,7 +2420,7 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
           <span class="result-count" id="result-count" aria-live="polite"></span>
         </div>
         <div class="controls">
-          <div class="control search-control"><label for="search">名前・効果・メモを検索</label><div class="search-field-row"><input id="search" type="search" placeholder="名前・効果・メモを検索"><button type="button" id="clear-search" class="tool-button clear-search" aria-label="検索文字を消去" title="検索文字を消去">✕ クリア</button></div></div>
+          <div class="control search-control"><label for="search">名前・効果・メモを検索</label><div class="search-field-row"><input id="search" type="search" placeholder="名前・番号（例：No.27）・効果で検索" list="name-list" autocomplete="off"><datalist id="name-list"></datalist><button type="button" id="clear-search" class="tool-button clear-search" aria-label="検索文字を消去" title="検索文字を消去">✕ クリア</button></div></div>
           <div class="control"><label for="category">カテゴリ</label><select id="category"><option value="all">全カテゴリ</option><option value="ノーマル">ノーマル</option><option value="シャイニー">シャイニー</option><option value="漆黒">漆黒</option><option value="レインボー">レインボー</option><option value="伝説">伝説</option><option value="幻・通常">幻・通常</option><option value="幻・闇">幻・闇</option><option value="幻・覚醒">幻・覚醒</option><option value="ボス">ボス（近日公開）</option></select></div>
           <div class="control"><label for="variant">変異</label><select id="variant"><option value="all">全変異</option><option value="ノーマル">ノーマル</option><option value="シャイニー">シャイニー</option><option value="漆黒">漆黒</option><option value="レインボー">レインボー</option><option value="なし">なし</option><option value="闇">闇</option><option value="覚醒">覚醒</option></select></div>
           <div class="control"><label for="evidence">根拠状態</label><select id="evidence"><option value="all">確認・計算すべて</option><option value="confirmed">確認済み中心</option><option value="calculated">計算値を含む</option></select></div>
@@ -2452,11 +2453,13 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
               <input id="bulk-level-input" type="number" min="1" max="150" step="1" value="1" inputmode="numeric">
               <button type="button" class="input-clear" id="clear-bulk-level" aria-label="一括レベル入力をクリア" title="入力をクリア">×</button>
               <button type="button" class="tool-button primary-tool" id="apply-bulk-level">一括適用</button>
+              <div class="preset-row" data-target="bulk-level-input"><button type="button" data-set="1">Lv1</button><button type="button" data-set="50">50</button><button type="button" data-set="100">100</button><button type="button" data-set="150">150</button></div>
               <button type="button" class="tool-button" id="reset-bulk-level">対象のLvを1に戻す</button>
               <label for="bulk-dupe-input" class="bulk-dupe-label">表示中の対象（伝説・幻）に一括凸設定</label>
               <input id="bulk-dupe-input" type="number" min="0" max="10" step="1" value="0" inputmode="numeric">
               <button type="button" class="input-clear" id="clear-bulk-dupe" aria-label="一括凸入力をクリア" title="入力をクリア">×</button>
               <button type="button" class="tool-button primary-tool" id="apply-bulk-dupe">一括適用</button>
+              <div class="preset-row" data-target="bulk-dupe-input"><button type="button" data-set="0">0凸</button><button type="button" data-set="5">5凸</button><button type="button" data-set="10">10凸</button></div>
               <button type="button" class="tool-button" id="reset-bulk-dupe">対象の凸を0に戻す</button>
               <small class="bulk-dupe-hint">凸設定は伝説・幻のみが対象（0〜10凸）</small>
             </div>
@@ -2466,7 +2469,15 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
         </div>
         <div class="active-filter-line"><span id="active-filter-label">全モンスターを表示中</span><span id="favorite-count">お気に入り 0件</span></div>
       </div>
-      <p class="helper-line">使い方：名前で検索 → カテゴリや根拠状態で絞り込み → カードを押して詳細・個別Lv設定。右上の「比較」で最大3体を比較できます。検索欄は「/」キーで開けます。<br>レベル倍率：Lv.1＝×1.00、1レベル上がるごとに基準値の5%ずつ上昇。HP・攻撃力の並び替えと比較には、現在のレベルを反映します。</p>
+      <details class="guide-fold" id="guide-fold"><summary>📖 使い方・数字の見方</summary>
+        <ul class="guide-list">
+          <li><b>探す</b>：名前・「No.27」のような番号で検索。ボタンやプルダウンで絞り込み。「/」キーで検索欄に移動。</li>
+          <li><b>見る</b>：カードを押すと詳細。詳細では左右スワイプ（PCは←→キー）で前後のモンスターへ。</li>
+          <li><b>育てる</b>：詳細でLv・凸を設定すると HP・攻撃力が計算されます。Lv倍率は1レベルごとに基準値の5%アップ（Lv1＝×1）、凸倍率は1凸ごとに5%アップ（伝説・幻のみ）。</li>
+          <li><b>比べる</b>：カードの「＋比較」で最大3体を比較。いちばん高い値に「▲最高」が付きます。</li>
+          <li><b>変異倍率</b>：ノーマル×1／シャイニー×2／漆黒×4／レインボー×8、幻は 通常×1／闇×1.2／覚醒×1.44（カードのバッジに表示）。</li>
+          <li><b>数字の単位</b>：K＝千、M＝百万、B＝十億。表示はゲームと同じく小数第1位で切り捨てです。</li>
+        </ul></details>
 
       <section class="recently-viewed" id="recently-viewed" hidden aria-label="最近見たモンスター">
         <div class="recent-head"><strong>🕘 最近見たモンスター</strong><button type="button" id="clear-recent" class="tool-button">履歴を消去</button></div>
@@ -2485,20 +2496,20 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
     </section>
   </main>
 
-  <footer class="shell">図鑑データとキャラクター画像（WebP）はこのHTMLに内蔵しています。</footer>
+  <footer class="shell">図鑑データとキャラクター画像（WebP）はこのHTMLに内蔵しています。<br>※ 数値が多少ずれている場合がありますがご了承ください。</footer>
   <button type="button" id="back-to-top" aria-label="ページ上部へ戻る">↑</button>
   <aside class="compare-tray" id="compare-tray" aria-live="polite"><strong>⚖ 比較中</strong><span class="compare-names" id="compare-names">0 / 3体選択</span><button type="button" id="compare-open">比較する</button><button type="button" class="secondary" id="compare-clear">クリア</button></aside>
   <dialog id="compare-dialog"><div class="compare-head"><div><span class="eyebrow">MONSTER ANALYSIS</span><h2>モンスター比較</h2></div><button type="button" id="compare-close">閉じる ✕</button></div><div id="compare-content"></div></dialog>
 
   <dialog id="detail-dialog">
-    <div class="dialog-head"><div><span class="badge" id="dialog-category"></span><h2 id="dialog-title"></h2></div><button class="close-button" id="dialog-close" type="button" aria-label="閉じる">×</button></div>
-    <div class="dialog-body"><div id="level-panel-host"></div><div class="dialog-layout"><div class="dialog-art" id="dialog-art"></div><dl class="detail-grid" id="detail-grid"></dl></div><p class="source-note" id="source-note"></p></div>
+    <div class="dialog-head"><div><span class="badge" id="dialog-category"></span><h2 id="dialog-title"></h2></div><button class="close-button" id="dialog-close" type="button" aria-label="閉じる">×</button><div class="dialog-tools"><button type="button" id="detail-prev" aria-label="前のモンスター">‹ 前</button><span id="detail-pos" aria-live="polite"></span><button type="button" id="detail-next" aria-label="次のモンスター">次 ›</button><button type="button" id="detail-fav" aria-label="お気に入り" aria-pressed="false">☆</button><button type="button" id="detail-compare">＋ 比較</button><button type="button" id="detail-copy">数値コピー</button><button type="button" id="detail-link">リンクコピー</button></div></div>
+    <div class="dialog-body"><p id="detail-rank" class="detail-rank"></p><div id="level-panel-host"></div><div class="dialog-layout"><div class="dialog-art" id="dialog-art"></div><dl class="detail-grid" id="detail-grid"></dl></div><p class="source-note" id="source-note"></p></div>
   </dialog>
 
   <!--
     AGENT NOTE:
     The complete current dataset is stored below as application/json.
-    Read the external category JSON files before inferring missing values. Preserve status,
+    Read the embedded manifest, normalData, legendData and phantomData in the script before inferring missing values. Preserve status,
     *_status, known_gaps, interpretation_rules, source_image and notes fields.
     Blank values mean unknown/not supplied unless an explicit status says otherwise.
   -->
@@ -2714,6 +2725,7 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
       return { label: status || '未記録', css: 'mixed' };
     }
 
+    function multTag(row) { return ({'ノーマル':'×1','シャイニー':'×2','漆黒':'×4','レインボー':'×8','幻・通常':'×1','幻・闇':'×1.2','幻・覚醒':'×1.44'})[row.category] || ''; }
     function searchable(row) {
       return JSON.stringify(row.raw).toLocaleLowerCase('ja-JP');
     }
@@ -2742,7 +2754,12 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
       const variant = elements.variant.value;
       const evidence = elements.evidence.value;
       let filtered = rows.filter(function (row) {
-        if (query && !searchable(row).includes(query)) return false;
+        if (query) {
+          const nm = query.match(/^(no\.?|№|#)?\s*0*(\d{1,3})\s*番?$/);
+          if (nm && (nm[1] || query.indexOf('番') >= 0)) { if (!(row.category !== '伝説' && String(row.category).indexOf('幻・') !== 0 && Number(row.raw.no) === Number(nm[2]))) return false; }
+          else if (nm) { if (!(Number(row.raw.no) === Number(nm[2]) || searchable(row).includes(query))) return false; }
+          else if (!searchable(row).includes(query)) return false;
+        }
         if (category !== 'all' && row.category !== category) return false;
         if (variant !== 'all' && row.variant !== variant) return false;
         if (quickCategory !== 'all' && row.category !== quickCategory) return false;
@@ -2788,7 +2805,7 @@ function render() {
       elements.resultCount.textContent = filtered.length + ' / ' + rows.length + '件';
       elements.empty.hidden = filtered.length !== 0;
       const bossSelected = elements.category.value === 'ボス' || quickCategory === 'ボス';
-      elements.empty.textContent = bossSelected ? '🔒 ボスは近日公開です。公開までお待ちください！' : '条件に一致するデータがありません。';
+      if (bossSelected) elements.empty.textContent = '🔒 ボスは近日公開です。公開までお待ちください！'; else elements.empty.innerHTML = '条件に一致するデータがありません。<br><button type="button" class="tool-button" id="empty-reset">条件をリセットする</button>';
       elements.empty.classList.toggle('coming-soon', bossSelected);
       elements.favoriteCount.textContent = 'お気に入り ' + favorites.size + '件';
       const active = [];
@@ -2830,7 +2847,7 @@ function render() {
           '<button type="button" class="card-compare ' + (compareSelection.has(row.key) ? 'selected' : '') + '" data-compare="' + escapeHtml(row.key) + '">' + (compareSelection.has(row.key) ? '✓ 選択中' : '＋ 比較') + '</button>' +
           '<button type="button" class="card-open" data-key="' + escapeHtml(row.key) + '">' +
           '<div class="monster-art">' + imageHtml + '</div><div class="card-body">' +
-          '<div class="card-topline"><span class="badge ' + categoryClass(row.category) + '">' + escapeHtml(row.category) + '</span><span class="card-index">' + escapeHtml(row.indexLabel) + '</span></div>' +
+          '<div class="card-topline"><span class="badge ' + categoryClass(row.category) + '">' + escapeHtml(row.category) + (multTag(row) ? ' <small class="mult-tag">' + multTag(row) + '</small>' : '') + '</span><span class="card-index">' + escapeHtml(row.indexLabel) + '</span></div>' +
           '<h3>' + escapeHtml(row.name) + '</h3><p class="card-variant">' + escapeHtml(row.rarityVariant) + '</p>' +
           '<div class="card-level">' + escapeHtml(cardMultiplierText) + '</div><div class="card-stats"><span class="card-stat"><small>HP</small><strong>' + escapeHtml(cardStatText('hp')) + '</strong></span><span class="card-stat"><small>攻撃力</small><strong>' + escapeHtml(cardStatText('power')) + '</strong>' + (abilityActivatedPowerText(row, cardLevel, cardDupes) ? '<small class="card-ability-power">能力発動時 ' + escapeHtml(abilityActivatedPowerText(row, cardLevel, cardDupes).replace(/[（）]/g,'')) + '</small>' : '') + '</span></div>' +
           (shouldShowAbility(row) ? '<section class="card-ability"><small>固有能力・効果</small><p>' + escapeHtml(row.effect || '能力情報未提供') + '</p></section>' : '') +
@@ -2867,7 +2884,9 @@ function render() {
       return String(value);
     }
 
+    let currentDetailKey = null;
     function openDetail(row) {
+      currentDetailKey = row.key;
       // Keep the last 8 viewed monsters on this device for quick access.
       try {
         let recent = JSON.parse(localStorage.getItem('monster-bestiary-recent') || '[]');
@@ -2876,7 +2895,7 @@ function render() {
         renderRecentViewed();
       } catch (_) {}
       elements.dialogTitle.textContent = row.name;
-      elements.dialogCategory.textContent = row.category;
+      elements.dialogCategory.textContent = row.category + (multTag(row) ? ' ' + multTag(row) : '');
       elements.dialogCategory.className = 'badge ' + categoryClass(row.category);
       const detailImage = getImageAsset(row.imageKey || row.key);
       elements.dialogArt.innerHTML = detailImage ? '<img src="' + detailImage + '" alt="' + escapeHtml(row.name) + '">' : '<div class="image-placeholder">画像未提供</div>';
@@ -2889,7 +2908,7 @@ function render() {
         return formatCompact(base * levelMultiplier(level) * (isLegendOrPhantom ? duplicateMultiplier(dupes) : 1));
       };
       const isMiconPonja = row.name === 'ミコン' || row.name === 'ポンジャ';
-      const abilityPowerText = function(level, dupes){ return formatCompact("+str(base_ability)+" * levelMultiplier(level) * (isLegendOrPhantom ? duplicateMultiplier(dupes) : 1)); };
+      const abilityPowerText = function(level, dupes){ return formatCompact(10043392.504930966 * levelMultiplier(level) * (isLegendOrPhantom ? duplicateMultiplier(dupes) : 1)); };
       const duoStoreKey = 'monster-bestiary-duo-independent-settings';
       let duoSettings = {};
       try { duoSettings = JSON.parse(localStorage.getItem(duoStoreKey) || '{}') || {}; } catch (_) { duoSettings = {}; }
@@ -2996,7 +3015,8 @@ function render() {
       const source = row.raw.source_image || '出典画像パスなし';
       const notes = row.raw.notes ? '／' + row.raw.notes : '';
       elements.sourceNote.textContent = '出典: ' + source + notes;
-      elements.dialog.showModal();
+      if (!elements.dialog.open) elements.dialog.showModal();
+      updateDetailNav(row);
     }
 
     elements.body.addEventListener('click', function (event) {
@@ -3034,7 +3054,7 @@ function render() {
       const chosen=rows.filter(row=>compareSelection.has(row.key));if(chosen.length<2)return;
       const comparisonStatText=(r,field)=>{const base=levelBase(r,field);if(base===null)return '未記録';const special=r.category==='伝説'||String(r.category).indexOf('幻・')===0;return formatCompact(base*levelMultiplier(getLevel(r))*(special?duplicateMultiplier(getDupes(r)):1));};
       const isMP=r=>r.name==='ミコン'||r.name==='ポンジャ';
-      const abilityCompareText=r=>isMP(r)?formatCompact("+str(base_ability)+"*levelMultiplier(getLevel(r))*duplicateMultiplier(getDupes(r))):'—';
+      const abilityCompareText=r=>isMP(r)?formatCompact(10043392.504930966*levelMultiplier(getLevel(r))*duplicateMultiplier(getDupes(r))):'—';
       const metrics=[['カテゴリ',r=>r.category],['レアリティ・変異',r=>r.rarityVariant],['設定レベル・凸',r=>'Lv.'+getLevel(r)+' ／ '+getDupes(r)+'凸（Lv×'+trim(levelMultiplier(getLevel(r)))+'・凸×'+trim(duplicateMultiplier(getDupes(r)))+'）'],['レベル・凸適用HP',r=>comparisonStatText(r,'hp')],['レベル・凸適用攻撃力',r=>comparisonStatText(r,'power')+(isMP(r)?'（能力発動時 '+abilityCompareText(r)+'）':'')],['能力発動時攻撃力',r=>abilityCompareText(r)],['確率・出現率',r=>r.chance],['根拠状態',r=>statusView(r.status).label],['固有効果',r=>r.effect||'未記録']];
       const isMobile=window.matchMedia('(max-width: 700px)').matches;
       if(isMobile){
@@ -3165,6 +3185,154 @@ function render() {
     document.getElementById('phantom-multipliers').insertAdjacentHTML('beforebegin', '<span>伝説 ×1</span>');
     renderRecentViewed();
     render();
+
+
+    // ---- 使いやすさ：通知（トースト）・名前候補・ガイドの開閉記憶 ----
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; t.setAttribute('role', 'status'); t.setAttribute('aria-live', 'polite'); document.body.appendChild(t); }
+      t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove('show'); }, 1900);
+    }
+    const nameOf = key => { const r = rows.find(x => x.key === key); return r ? r.name : ''; };
+    elements.body.addEventListener('click', function (event) {
+      const f = event.target.closest('[data-favorite]');
+      if (f) { const k = f.dataset.favorite; showToast(favorites.has(k) ? '★ お気に入りに追加：' + nameOf(k) : '☆ お気に入りを解除：' + nameOf(k)); return; }
+      const c = event.target.closest('[data-compare]');
+      if (c) { const k = c.dataset.compare; showToast(compareSelection.has(k) ? '⚖ 比較に追加：' + nameOf(k) + '（' + compareSelection.size + '/3）' : '比較から外しました：' + nameOf(k)); }
+    });
+    document.getElementById('detail-fav').addEventListener('click', function () { const k = currentDetailKey; if (k) showToast(favorites.has(k) ? '★ お気に入りに追加：' + nameOf(k) : '☆ お気に入りを解除：' + nameOf(k)); });
+    document.getElementById('detail-compare').addEventListener('click', function () { const k = currentDetailKey; if (k && compareSelection.has(k)) showToast('⚖ 比較に追加：' + nameOf(k) + '（' + compareSelection.size + '/3）'); });
+    document.getElementById('detail-copy').addEventListener('click', () => showToast('数値をコピーしました'));
+    document.getElementById('detail-link').addEventListener('click', () => showToast('リンクをコピーしました'));
+    const isSpecial = r => r.category === '伝説' || String(r.category).indexOf('幻・') === 0;
+    document.getElementById('apply-bulk-level').addEventListener('click', () => showToast('表示中の' + filterRows().length + '件をLv' + getLevelValue('bulk-level-input') + 'にしました'));
+    document.getElementById('apply-bulk-dupe').addEventListener('click', () => showToast('表示中の伝説・幻 ' + filterRows().filter(isSpecial).length + '件を' + getLevelValue('bulk-dupe-input') + '凸にしました'));
+    document.getElementById('reset-bulk-level').addEventListener('click', () => showToast('表示中の対象のLvを1に戻しました'));
+    document.getElementById('reset-bulk-dupe').addEventListener('click', () => showToast('表示中の対象の凸を0に戻しました'));
+    document.getElementById('export-csv').addEventListener('click', () => showToast('CSVを出力しました（' + filterRows().length + '件）'));
+    document.getElementById('backup-settings').addEventListener('click', () => showToast('バックアップを保存しました'));
+    document.getElementById('reset-filters').addEventListener('click', () => showToast('条件をリセットしました'));
+    function getLevelValue(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+    document.getElementById('empty-state').addEventListener('click', function (e) { if (e.target.closest('#empty-reset')) document.getElementById('reset-filters').click(); });
+    (function () {
+      const dl = document.getElementById('name-list'); if (!dl) return;
+      const names = Array.from(new Set(rows.map(r => r.name).filter(Boolean)));
+      dl.innerHTML = names.map(n => '<option value="' + escapeHtml(n) + '"></option>').join('');
+      const g = document.getElementById('guide-fold'); if (!g) return;
+      let state = null; try { state = localStorage.getItem('monster-bestiary-guide'); } catch (_) {}
+      g.open = state !== 'closed';
+      g.addEventListener('toggle', function () { try { localStorage.setItem('monster-bestiary-guide', g.open ? 'open' : 'closed'); } catch (_) {} });
+    })();
+    // ---- 便利機能：詳細の前後移動・お気に入り・コピー、表示設定の記憶 ----
+    function updateDetailNav(row) {
+      const list = filterRows(); const i = list.findIndex(r => r.key === row.key);
+      document.getElementById('detail-pos').textContent = i >= 0 ? (i + 1) + ' / ' + list.length : '絞り込み外';
+      const multi = list.length > 1;
+      document.getElementById('detail-prev').disabled = !multi; document.getElementById('detail-next').disabled = !multi;
+      const fav = document.getElementById('detail-fav'); const on = favorites.has(row.key);
+      fav.textContent = on ? '★' : '☆'; fav.setAttribute('aria-pressed', String(on));
+      document.getElementById('detail-compare').textContent = compareSelection.has(row.key) ? '✓ 比較中' : '＋ 比較';
+      addStepButtons('monster-level-input', [['−10', -10], ['−1', -1], ['＋1', 1], ['＋10', 10]], [['Lv1', 1], ['50', 50], ['100', 100], ['150', 150]]);
+      addStepButtons('monster-dupe-input', [['−1', -1], ['＋1', 1]], [['0凸', 0], ['5凸', 5], ['10凸', 10]]);
+      const rankEl = document.getElementById('detail-rank');
+      if (rankEl) {
+        const rankOf = field => { const v = levelBase(row, field); if (v === null) return null; return 1 + rows.filter(r => { const x = levelBase(r, field); return x !== null && x > v; }).length; };
+        const rh = rankOf('hp'), rp = rankOf('power');
+        rankEl.textContent = (rh && rp) ? 'Lv1・0凸の強さ順位：HP ' + rh + '位／攻撃力 ' + rp + '位（全' + rows.length + '件中）' : '';
+      }
+      try { history.replaceState(null, '', '#m=' + encodeURIComponent(row.key)); } catch (_) {}
+    }
+    function addStepButtons(inputId, steps, presets) {
+      const input = document.getElementById(inputId); if (!input) return;
+      const holder = input.closest('.level-controls'); if (!holder || holder.nextElementSibling && holder.nextElementSibling.classList.contains('step-row')) return;
+      const row = document.createElement('div'); row.className = 'step-row';
+      const mk = (label, kind, val) => '<button type="button" data-' + kind + '="' + val + '">' + label + '</button>';
+      row.innerHTML = steps.map(s => mk(s[0], 'step', s[1])).join('') + '<span class="step-gap"></span>' + presets.map(p => mk(p[0], 'set', p[1])).join('');
+      row.addEventListener('click', function (e) {
+        const b = e.target.closest('button'); if (!b) return;
+        const min = Number(input.min), max = Number(input.max); const cur = Number(input.value) || min;
+        const next = b.dataset.set !== undefined ? Number(b.dataset.set) : cur + Number(b.dataset.step);
+        input.value = String(Math.max(min, Math.min(max, next)));
+        input.dispatchEvent(new Event('input', { bubbles: true })); input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      holder.insertAdjacentElement('afterend', row);
+    }
+    document.querySelectorAll('.preset-row').forEach(function (row) {
+      row.addEventListener('click', function (e) { const b = e.target.closest('button'); if (!b) return; const input = document.getElementById(row.dataset.target); if (input) input.value = b.dataset.set; });
+    });
+    // 比較：HP・攻撃力が最も高い項目を強調
+    document.getElementById('compare-open').addEventListener('click', function () {
+      const chosen = rows.filter(r => compareSelection.has(r.key)); if (chosen.length < 2) return;
+      const val = (r, f) => { const b = levelBase(r, f); if (b === null) return -1; const sp = r.category === '伝説' || String(r.category).indexOf('幻・') === 0; return b * levelMultiplier(getLevel(r)) * (sp ? duplicateMultiplier(getDupes(r)) : 1); };
+      [['レベル・凸適用HP', 'hp'], ['レベル・凸適用攻撃力', 'power']].forEach(function (pair) {
+        const vals = chosen.map(r => val(r, pair[1])); const max = Math.max.apply(null, vals); if (max <= 0) return;
+        const best = vals.map((v, i) => v === max ? i : -1).filter(i => i >= 0); if (best.length === vals.length) return;
+        document.querySelectorAll('#compare-content tr').forEach(function (tr) { const th = tr.querySelector('th'); if (th && th.textContent === pair[0]) best.forEach(i => tr.querySelectorAll('td')[i] && tr.querySelectorAll('td')[i].classList.add('best')); });
+        document.querySelectorAll('#compare-content .compare-mobile-card').forEach(function (card, i) { if (best.indexOf(i) < 0) return; card.querySelectorAll('.compare-mobile-row').forEach(function (r) { const dt = r.querySelector('dt'); if (dt && dt.textContent === pair[0]) r.querySelector('dd').classList.add('best'); }); });
+      });
+    });
+    function stepDetail(dir) {
+      const list = filterRows(); if (list.length < 2) return;
+      let i = list.findIndex(r => r.key === currentDetailKey);
+      i = i < 0 ? (dir > 0 ? 0 : list.length - 1) : (i + dir + list.length) % list.length;
+      openDetail(list[i]);
+      const body = elements.dialog.querySelector('.dialog-body'); if (body) body.scrollTop = 0;
+    }
+    document.getElementById('detail-prev').addEventListener('click', () => stepDetail(-1));
+    document.getElementById('detail-next').addEventListener('click', () => stepDetail(1));
+    document.getElementById('detail-fav').addEventListener('click', function () {
+      if (!currentDetailKey) return;
+      if (favorites.has(currentDetailKey)) favorites.delete(currentDetailKey); else favorites.add(currentDetailKey);
+      persistFavorites(); render();
+      const row = rows.find(r => r.key === currentDetailKey); if (row) updateDetailNav(row);
+    });
+    document.getElementById('detail-compare').addEventListener('click', function () {
+      const key = currentDetailKey; if (!key) return; const btn = this;
+      if (compareSelection.has(key)) compareSelection.delete(key);
+      else if (compareSelection.size < 3) compareSelection.add(key);
+      else { btn.textContent = '最大3体まで'; setTimeout(() => { const r = rows.find(x => x.key === key); if (r) updateDetailNav(r); }, 1200); return; }
+      updateCompareTray(); const r = rows.find(x => x.key === key); if (r) updateDetailNav(r);
+    });
+    document.getElementById('detail-link').addEventListener('click', function () {
+      const btn = this; const url = location.href.split('#')[0] + '#m=' + encodeURIComponent(currentDetailKey || '');
+      const done = ok => { btn.textContent = ok ? '✓ コピー済' : '失敗'; setTimeout(() => { btn.textContent = 'リンクコピー'; }, 1300); };
+      const fallback = () => { try { const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); done(ok); } catch (_) { done(false); } };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(() => done(true), fallback); else fallback();
+    });
+    elements.dialog.addEventListener('close', function () { try { if (location.hash.indexOf('#m=') === 0) history.replaceState(null, '', location.pathname + location.search); } catch (_) {} });
+    (function () {
+      const m = location.hash.match(/^#m=(.+)$/); if (!m) return;
+      let key = ''; try { key = decodeURIComponent(m[1]); } catch (_) { return; }
+      const row = rows.find(r => r.key === key); if (row) openDetail(row);
+    })();
+    document.getElementById('detail-copy').addEventListener('click', function () {
+      const btn = this; const t = id => (document.getElementById(id) || {}).textContent || '';
+      const text = elements.dialogTitle.textContent + '（' + elements.dialogCategory.textContent + '）' + t('level-current-label') + ' HP ' + t('level-hp-result') + ' / 攻撃力 ' + t('level-power-result');
+      const done = ok => { btn.textContent = ok ? '✓ コピー済' : '失敗'; setTimeout(() => { btn.textContent = '数値コピー'; }, 1300); };
+      const fallback = () => { try { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); done(ok); } catch (_) { done(false); } };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), fallback); else fallback();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (!elements.dialog.open || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+      if (event.key === 'ArrowLeft') { event.preventDefault(); stepDetail(-1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); stepDetail(1); }
+    });
+    (function () {
+      let sx = 0, sy = 0, tracking = false;
+      elements.dialog.addEventListener('touchstart', e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; tracking = !e.target.closest('input,select,textarea,.dialog-tools'); }, { passive: true });
+      elements.dialog.addEventListener('touchend', e => { if (!tracking) return; const t = e.changedTouches[0]; const dx = t.clientX - sx, dy = t.clientY - sy; if (Math.abs(dx) > 80 && Math.abs(dy) < 50) stepDetail(dx < 0 ? 1 : -1); tracking = false; }, { passive: true });
+    })();
+    (function () {
+      const KEY = 'monster-bestiary-ui'; let ui = {};
+      try { ui = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (_) {}
+      const pageSel = document.getElementById('page-size');
+      if (ui.sort && Array.from(elements.sort.options).some(o => o.value === ui.sort)) { elements.sort.value = ui.sort; elements.sort.dispatchEvent(new Event('change')); }
+      if (ui.pageSize && Array.from(pageSel.options).some(o => o.value === ui.pageSize)) { pageSel.value = ui.pageSize; pageSel.dispatchEvent(new Event('change')); }
+      if (ui.view === 'list') document.getElementById('list-view').click();
+      const save = () => setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify({ sort: elements.sort.value, pageSize: pageSel.value, view: document.getElementById('list-view').getAttribute('aria-pressed') === 'true' ? 'list' : 'grid' })); } catch (_) {} }, 0);
+      elements.sort.addEventListener('change', save); pageSel.addEventListener('change', save);
+      document.getElementById('list-view').addEventListener('click', save); document.getElementById('grid-view').addEventListener('click', save);
+    })();
   </script>
 
 
@@ -3614,6 +3782,58 @@ html{scroll-behavior:smooth}
 <style id="boss-coming-soon">
 .soon-tag{display:inline-block;margin-left:.35em;padding:1px 7px;border-radius:999px;font-size:.62rem;font-weight:800;color:#2b1a00;background:linear-gradient(135deg,#ffd76a,#ffa94d);vertical-align:middle}
 .empty.coming-soon{padding:34px 18px;text-align:center;font-size:1.05rem;font-weight:800;color:#ffe3ad;border:1px dashed rgba(255,215,106,.55);border-radius:18px;background:rgba(255,200,90,.08)}
+</style>
+<style id="convenience-ui">
+.dialog-head{flex-wrap:wrap!important;row-gap:10px}
+.dialog-tools{order:3;width:100%;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dialog-tools button{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#eaf6ff;font-weight:800;font-size:.85rem;cursor:pointer}
+.dialog-tools button:disabled{opacity:.4;cursor:default}
+.dialog-tools #detail-pos{flex:1;text-align:center;font-weight:800;color:#bff3ec;font-size:.85rem;white-space:nowrap}
+.dialog-tools #detail-fav{font-size:1.1rem;padding:0 12px}
+.dialog-tools #detail-fav[aria-pressed="true"]{color:#ffd84d;border-color:rgba(255,216,77,.6)}
+</style>
+<style id="note-ui">
+.data-note{margin:10px 0 0;padding:8px 12px;border-left:3px solid #ffd76a;background:rgba(255,215,106,.1);border-radius:8px;color:#ffe9b0;font-size:.85rem;font-weight:700;line-height:1.5}
+footer.shell{line-height:1.8}
+</style>
+<style id="mobile-fixes">
+.dialog-tools{gap:6px!important}
+.dialog-tools button{min-height:40px!important;padding:0 11px!important;font-size:.78rem!important}
+.dialog-tools #detail-pos{min-width:64px}
+.jump-pill{min-height:40px!important;display:inline-flex!important;align-items:center}
+.monster-card .card-favorite{width:42px!important;height:42px!important}
+.monster-card .card-compare{min-height:38px!important;width:auto!important;max-width:none!important;min-width:64px;padding:0 10px!important;font-size:.7rem!important}
+#bulk-level-input,#bulk-dupe-input{min-width:72px}
+.monster-card .card-compare{transform:translateY(5px)}
+body:has(.compare-tray.visible) #back-to-top{bottom:calc(136px + env(safe-area-inset-bottom,0px))!important}
+</style>
+<style id="more-convenience">
+.preset-row,.step-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.preset-row button,.step-row button{min-height:38px;min-width:46px;padding:0 10px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#eaf6ff;font-weight:800;font-size:.8rem;cursor:pointer}
+.preset-row button:active,.step-row button:active{background:rgba(90,230,210,.28)}
+.step-gap{flex:1 1 8px}
+.bulk-level .preset-row{grid-column:1 / -1!important;margin:2px 0 6px}
+.bulk-level .preset-row,.level-panel .step-row{display:flex!important;flex-direction:row!important;flex-wrap:wrap}
+.bulk-level .preset-row button,.level-panel .step-row button{width:auto!important;flex:1 1 0!important;min-width:0!important;min-height:40px!important;padding:0 6px!important;white-space:nowrap}
+.level-panel .step-row .step-gap{flex:0 0 6px!important;width:6px!important}
+.detail-rank{margin:0 0 10px;padding:8px 12px;border-radius:12px;background:rgba(120,160,255,.12);border:1px solid rgba(120,160,255,.28);color:#cfe0ff;font-size:.82rem;font-weight:700}
+.detail-rank:empty{display:none}
+.best{color:#ffe08a!important;font-weight:900}
+.best::after{content:" ▲最高";font-size:.7em;color:#ffd76a}
+</style>
+<style id="clarity-2">
+.mult-tag{display:inline-block;margin-left:.3em;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.16);font-size:.72em;font-weight:900;letter-spacing:.02em}
+.guide-fold{margin:10px 0;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(8,14,30,.5)}
+.guide-fold>summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:800;color:#bff3ec}
+.guide-fold>summary::-webkit-details-marker{display:none}
+.guide-fold>summary::after{content:"＋";float:right;font-weight:900}
+.guide-fold[open]>summary::after{content:"－"}
+.guide-list{margin:0;padding:0 16px 14px 34px;color:#d5e6f5;font-size:.88rem;line-height:1.75}
+.guide-list b{color:#ffe08a}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:88vw;padding:11px 18px;border-radius:999px;background:rgba(10,20,40,.94);border:1px solid rgba(130,255,235,.55);color:#effffc;font-weight:800;font-size:.88rem;box-shadow:0 8px 28px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:2147483000;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+body:has(.compare-tray.visible) #toast{bottom:calc(142px + env(safe-area-inset-bottom,0px))}
+#empty-state #empty-reset{margin-top:12px}
 </style>
 </body>
 </html>
