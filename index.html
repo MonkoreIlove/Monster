@@ -3306,8 +3306,20 @@ function render() {
       const row = rows.find(r => r.key === key); if (row) openDetail(row);
     })();
     document.getElementById('detail-copy').addEventListener('click', function () {
-      const btn = this; const t = id => (document.getElementById(id) || {}).textContent || '';
-      const text = elements.dialogTitle.textContent + '（' + elements.dialogCategory.textContent + '）' + t('level-current-label') + ' HP ' + t('level-hp-result') + ' / 攻撃力 ' + t('level-power-result');
+      const btn = this;
+      const t = id => (document.getElementById(id) || {}).textContent || '';
+      const row = rows.find(r => r.key === currentDetailKey);
+      if (!row) return;
+      const level = getLevel(row);
+      const isLegendOrPhantom = row.category === '伝説' || String(row.category).indexOf('幻・') === 0;
+      const dupes = isLegendOrPhantom ? getDupes(row) : 0;
+      const levelInfo = 'Lv.' + level + (isLegendOrPhantom ? ' ／ ' + dupes + '凸' : '');
+      const multipliers = '（Lv倍率 ×' + trim(levelMultiplier(level)) +
+        (isLegendOrPhantom ? '・凸倍率 ×' + trim(duplicateMultiplier(dupes)) : '') + '）';
+      const text = elements.dialogTitle.textContent + '（' + elements.dialogCategory.textContent + '）\n' +
+        levelInfo + ' ' + multipliers + '\n' +
+        'HP ' + t('level-hp-result') + '\n' +
+        '攻撃力 ' + t('level-power-result');
       const done = ok => { btn.textContent = ok ? '✓ コピー済' : '失敗'; setTimeout(() => { btn.textContent = '数値コピー'; }, 1300); };
       const fallback = () => { try { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); done(ok); } catch (_) { done(false); } };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), fallback); else fallback();
