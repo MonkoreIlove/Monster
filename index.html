@@ -1323,7 +1323,45 @@ img, svg, video, canvas { max-width: 100%; }
   .hero-monster span { padding: 8px 4px 10px; font-size: clamp(.62rem, 2.6vw, .78rem); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-</style>
+
+    /* Compact record summary: five categories fit on one row on desktop. */
+    .summary-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin: 14px 0 12px; }
+    .summary-card { min-width: 0; min-height: 118px; padding: 16px 17px; border-radius: 15px; }
+    .summary-card strong { margin-top: 7px; font-size: clamp(1.8rem, 2.5vw, 2.35rem); }
+    .summary-card span { margin-top: 6px; font-size: .76rem; line-height: 1.45; }
+    .record-quick-tools {
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin:0 0 20px; padding:12px 15px;
+      border:1px solid rgba(146,188,177,.19); border-radius:13px;
+      background:linear-gradient(100deg,rgba(14,27,34,.86),rgba(13,19,31,.82));
+    }
+    .record-quick-heading { display:flex; flex-direction:column; gap:3px; flex:0 0 auto; }
+    .record-quick-heading strong { color:#e5f4ef; font-size:.82rem; letter-spacing:.05em; }
+    .record-quick-heading span { color:#91a8b1; font-size:.68rem; }
+    .record-quick-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:7px; }
+    .record-quick-button {
+      min-height:34px; padding:7px 12px; border-radius:999px;
+      border:1px solid rgba(145,169,215,.25); background:rgba(7,11,21,.7);
+      color:#cbd5eb; font-size:.74rem; font-weight:800; cursor:pointer;
+      transition:border-color .18s,background .18s,transform .18s;
+    }
+    .record-quick-button:hover { border-color:var(--cyan); color:#fff; transform:translateY(-1px); }
+    .record-quick-button.quick-random { border-color:rgba(243,205,115,.55); color:#ffe6a2; }
+    @media (max-width: 760px) {
+      .record-quick-tools { align-items:stretch; flex-direction:column; gap:9px; margin-bottom:15px; }
+      .record-quick-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); justify-content:stretch; }
+      .record-quick-button { min-width:0; white-space:normal; padding:8px 7px; }
+    }
+    @media (max-width: 1000px) { .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+      .summary-card { min-height: 106px; padding: 13px; }
+      .summary-card strong { font-size: 1.9rem; } .summary-card span { font-size: .7rem; }
+      .record-balance { margin-bottom: 15px; padding: 11px 12px; }
+      .record-balance-head { flex-wrap: wrap; gap: 3px 8px; } .record-balance-legend { gap: 7px 12px; }
+    }
+
+  </style>
   <style>
 
 
@@ -2543,7 +2581,6 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
       <article class="summary-card" style="--accent: var(--gold)"><small>伝説</small><strong id="legend-count">10</strong><span>固定確率・限定期間・固有効果</span></article>
       <article class="summary-card" style="--accent: var(--pink)"><small>幻レコード</small><strong id="phantom-count">15</strong><span>5種 × なし・闇・覚醒</span></article>
       <article class="summary-card" style="--accent: #c34cff"><small>ボス</small><strong id="boss-count">1</strong><span>ボス戦で確率入手</span></article>
-      <article class="summary-card" style="--accent: var(--green)"><small>総レコード</small><strong id="total-count">106</strong><span>カテゴリ別に管理</span></article>
     </section>
 
     <section class="rule-grid" aria-label="入手方法と倍率">
@@ -2726,7 +2763,6 @@ dialog,#compare-dialog{box-sizing:border-box;max-width:calc(100vw - 24px);max-he
     document.getElementById('legend-count').textContent = DATA.totals.legends;
     document.getElementById('phantom-count').textContent = DATA.totals.phantom_records;
     document.getElementById('boss-count').textContent = DATA.totals.bosses || DATA.bosses.length;
-    document.getElementById('total-count').textContent = DATA.totals.monster_records_total;
     document.getElementById('hero-monster-1').src = getImageAsset('legend-10');
     document.getElementById('hero-monster-2').src = getImageAsset('boss-1');
     document.getElementById('hero-monster-3').src = getImageAsset('legend-9');
@@ -4235,6 +4271,60 @@ body:has(dialog[open]) #bg-gradient,body:has(dialog[open]) #bg-gradient::before{
 .card-index{display:inline-block;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.35;text-align:right}
 .rainbow-equivalent-note{display:block;margin-top:4px;color:#b7e9e6;font-size:.72rem;line-height:1.35;font-weight:700}
 @media(max-width:600px){.card-index{font-size:.68rem}.rainbow-equivalent-note{font-size:.66rem}}
+</style>
+
+<style id="compact-record-cards">
+/* 図鑑レコードの余白を整理。情報の読みやすさとスマホ操作領域は維持する。 */
+#catalog-body.gallery,.gallery:not(.list-mode){
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr)) !important;
+  gap:10px !important;
+  padding:12px !important;
+  align-items:stretch;
+}
+#catalog-body.gallery article.monster-card,.gallery article.monster-card{
+  min-height:0 !important;
+}
+#catalog-body.gallery article.monster-card .monster-art,.gallery article.monster-card .monster-art{
+  aspect-ratio:1 / .94 !important;
+  min-height:0 !important;
+  max-height:218px;
+}
+#catalog-body.gallery article.monster-card .monster-art img,.gallery article.monster-card .monster-art img{
+  padding:7px !important;
+}
+#catalog-body.gallery article.monster-card .card-body,.gallery article.monster-card .card-body{
+  padding:10px 11px 11px !important;
+  gap:3px !important;
+}
+#catalog-body.gallery article.monster-card .card-topline,.gallery article.monster-card .card-topline{
+  gap:4px 6px !important;
+  line-height:1.3;
+}
+#catalog-body.gallery article.monster-card h3,.gallery article.monster-card h3{
+  margin:5px 0 2px !important;
+  line-height:1.25 !important;
+}
+#catalog-body.gallery article.monster-card .card-stats,.gallery article.monster-card .card-stats{
+  gap:5px !important;
+  margin-top:8px !important;
+}
+#catalog-body.gallery article.monster-card .card-stat,.gallery article.monster-card .card-stat{
+  padding:6px 7px !important;
+}
+#catalog-body.gallery article.monster-card .rainbow-equivalent-note,.gallery article.monster-card .rainbow-equivalent-note{
+  margin-top:2px !important;
+}
+@media(max-width:700px){
+  #catalog-body.gallery,.gallery:not(.list-mode){gap:7px !important;padding:8px !important;}
+  #catalog-body.gallery article.monster-card .monster-art,.gallery article.monster-card .monster-art{max-height:170px;}
+  #catalog-body.gallery article.monster-card .card-body,.gallery article.monster-card .card-body{padding:8px !important;}
+  #catalog-body.gallery article.monster-card .card-stats,.gallery article.monster-card .card-stats{gap:4px !important;margin-top:6px !important;}
+  #catalog-body.gallery article.monster-card .card-stat,.gallery article.monster-card .card-stat{padding:5px 6px !important;}
+}
+@media(max-width:360px){
+  #catalog-body.gallery,.gallery:not(.list-mode){gap:6px !important;padding:6px !important;}
+  #catalog-body.gallery article.monster-card .card-body,.gallery article.monster-card .card-body{padding:7px !important;}
+}
 </style>
 
 </body>
